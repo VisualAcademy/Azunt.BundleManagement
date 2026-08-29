@@ -1,0 +1,29 @@
+name: .NET
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            8.0.x
+            10.0.x
+      - name: Restore
+        run: |
+          dotnet restore src/Azunt.BundleManagement/Azunt.BundleManagement/Azunt.BundleManagement.csproj
+          dotnet restore src/Azunt.BundleManagement/Azunt.Web/Azunt.Web.csproj
+          dotnet restore src/Azunt.BundleManagement/Azunt.BundleManagement.Tests/Azunt.BundleManagement.Tests.csproj
+      - name: Build library
+        run: dotnet build src/Azunt.BundleManagement/Azunt.BundleManagement/Azunt.BundleManagement.csproj --configuration Release --no-restore
+      - name: Build web
+        run: dotnet build src/Azunt.BundleManagement/Azunt.Web/Azunt.Web.csproj --configuration Release --no-restore
+      - name: Test
+        run: dotnet test src/Azunt.BundleManagement/Azunt.BundleManagement.Tests/Azunt.BundleManagement.Tests.csproj --configuration Release --no-restore

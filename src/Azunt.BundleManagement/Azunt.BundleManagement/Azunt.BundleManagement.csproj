@@ -1,0 +1,50 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+
+    <PackageId>Azunt.BundleManagement</PackageId>
+    <Version>1.0.0</Version>
+    <Title>Azunt.BundleManagement</Title>
+    <Description>Reusable .NET 8 bundle definition CRUD module for inventory, configuration, kit, package, and catalog applications. Supports EF Core In-Memory, SQL Server, Dapper, ADO.NET, tenant-aware connection strings, schema creation/enhancement, and offset-aware audit timestamps.</Description>
+    <PackageTags>Azunt;bundle;inventory;catalog;kit;package;configuration;EFCore;InMemory;Dapper;ADO.NET;Blazor;SQLServer;DateTimeOffset;multitenant;schema</PackageTags>
+    <Authors>VisualAcademy</Authors>
+    <Company>VisualAcademy</Company>
+    <Copyright>Copyright © 2026 VisualAcademy</Copyright>
+
+    <PackageProjectUrl>https://github.com/VisualAcademy/Azunt.BundleManagement</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/VisualAcademy/Azunt.BundleManagement</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageReleaseNotes>Initial standalone release with Bundle CRUD, multiple repository implementations, tenant-aware connection strings, schema creation/enhancement, and DateTimeOffset audit timestamps.</PackageReleaseNotes>
+
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);1591</NoWarn>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <ContinuousIntegrationBuild Condition="'$(CI)' == 'true'">true</ContinuousIntegrationBuild>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Dapper" Version="2.1.79" />
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="6.1.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.22" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.22" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.22" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\..\README.md" Pack="true" PackagePath="" />
+    <None Include="..\..\..\LICENSE" Pack="true" PackagePath="" />
+    <None Include="..\..\..\CHANGELOG.md" Pack="true" PackagePath="" />
+  </ItemGroup>
+</Project>
