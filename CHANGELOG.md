@@ -1,4 +1,15 @@
-# Changelog
+﻿# Changelog
+
+## 1.1.0 - 2026-08-31
+
+- Added `IBundleRepository.GetRecentAsync` for dashboard and summary scenarios.
+- Recent Bundle ordering uses `ModifiedAt` when available and otherwise `CreatedAt`.
+- Added EF Core, Dapper, and ADO.NET implementations with explicit tenant connection-string support.
+- Added a reusable `RecentBundles` Blazor dashboard component with a configurable item count and list link.
+- Added `GET /api/bundles/recent?count=5`.
+- Added recent-activity repository tests.
+- Added the recent Bundle summary to the `Azunt.Web` home page.
+
 
 ## 1.0.0 - 2026-08-30
 

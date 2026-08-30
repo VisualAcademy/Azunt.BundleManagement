@@ -1,4 +1,4 @@
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -38,6 +38,22 @@ public sealed class BundleRepository : IBundleRepository
     {
         await using var context = CreateContext(connectionString);
         return await context.Bundles.AsNoTracking().OrderByDescending(m => m.Id).ToListAsync();
+    }
+
+    public async Task<List<Bundle>> GetRecentAsync(
+        int count = 5,
+        string? connectionString = null)
+    {
+        var take = Math.Clamp(count, 1, 50);
+
+        await using var context = CreateContext(connectionString);
+
+        return await context.Bundles
+            .AsNoTracking()
+            .OrderByDescending(m => m.ModifiedAt ?? m.CreatedAt)
+            .ThenByDescending(m => m.Id)
+            .Take(take)
+            .ToListAsync();
     }
 
     public async Task<Bundle?> GetByIdAsync(int id, string? connectionString = null)

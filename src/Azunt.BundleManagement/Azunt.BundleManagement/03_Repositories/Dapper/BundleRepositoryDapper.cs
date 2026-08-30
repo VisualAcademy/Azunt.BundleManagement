@@ -1,4 +1,4 @@
-using Dapper;
+﻿using Dapper;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -54,6 +54,25 @@ public sealed class BundleRepositoryDapper : IBundleRepository
         const string sql = "SELECT * FROM dbo.Bundles ORDER BY Id DESC;";
         await using var connection = CreateConnection(connectionString);
         return (await connection.QueryAsync<Bundle>(sql)).AsList();
+    }
+
+    public async Task<List<Bundle>> GetRecentAsync(
+        int count = 5,
+        string? connectionString = null)
+    {
+        var take = Math.Clamp(count, 1, 50);
+
+        const string sql = """
+            SELECT TOP (@Count) *
+            FROM dbo.Bundles
+            ORDER BY COALESCE(ModifiedAt, CreatedAt) DESC, Id DESC;
+            """;
+
+        await using var connection = CreateConnection(connectionString);
+        return (await connection.QueryAsync<Bundle>(
+            sql,
+            new { Count = take }))
+            .AsList();
     }
 
     public async Task<Bundle?> GetByIdAsync(int id, string? connectionString = null)

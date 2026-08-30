@@ -1,4 +1,4 @@
-# Azunt.BundleManagement
+﻿# Azunt.BundleManagement
 
 `Azunt.BundleManagement` is a standalone .NET 8 module for managing reusable **Bundle** definitions in inventory, catalog, configuration, kit, package, software-set, and other business applications.
 
@@ -65,6 +65,7 @@ The NuGet-ready library provides:
 - `BundleFilterOptions`
 - `PagedResult<T>`
 - `IBundleRepository`
+- `GetRecentAsync(count, connectionString)` for dashboard/recent-activity summaries
 - `BundleRepository` for EF Core
 - `BundleRepositoryDapper` for Dapper
 - `BundleRepositoryAdoNet` for ADO.NET
@@ -207,6 +208,38 @@ CREATE TABLE [dbo].[Bundles]
 Indexes are included for `Code`, `Status`, and `IsActive`.
 
 The database project represents the canonical schema for a new installation of this module.
+
+## Recent Bundle dashboard summary
+
+`IBundleRepository.GetRecentAsync` returns the latest Bundle activity ordered by
+`ModifiedAt` when a Bundle has been edited, otherwise by `CreatedAt`.
+
+```csharp
+var recentBundles = await repository.GetRecentAsync(
+    count: 5,
+    connectionString: currentTenantConnectionString);
+```
+
+This makes the same API suitable for single-database and multi-tenant dashboards.
+
+The .NET 10 `Azunt.Web` demo includes a reusable `RecentBundles` Razor component:
+
+```razor
+<RecentBundles Count="5"
+               Title="Recent Bundles"
+               ListUrl="/Bundles"
+               MoreText="View all" />
+```
+
+The component is used on the demo home page and displays a compact five-item
+summary with status, created/updated state, browser-local date/time, and a link
+to the full Bundle list.
+
+A REST endpoint is also available:
+
+```text
+GET /api/bundles/recent?count=5
+```
 
 ## Azunt.Web CRUD demo
 

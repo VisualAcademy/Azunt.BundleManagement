@@ -1,4 +1,4 @@
-using Microsoft.Data.SqlClient;
+﻿using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System.ComponentModel.DataAnnotations;
@@ -53,6 +53,28 @@ public sealed class BundleRepositoryAdoNet : IBundleRepository
         await using var connection = new SqlConnection(ResolveConnectionString(connectionString));
         await connection.OpenAsync();
         await using var command = new SqlCommand(sql, connection);
+        await using var reader = await command.ExecuteReaderAsync();
+        return await ReadManyAsync(reader);
+    }
+
+    public async Task<List<Bundle>> GetRecentAsync(
+        int count = 5,
+        string? connectionString = null)
+    {
+        var take = Math.Clamp(count, 1, 50);
+
+        const string sql = """
+            SELECT TOP (@Count) *
+            FROM dbo.Bundles
+            ORDER BY COALESCE(ModifiedAt, CreatedAt) DESC, Id DESC;
+            """;
+
+        await using var connection = new SqlConnection(ResolveConnectionString(connectionString));
+        await connection.OpenAsync();
+
+        await using var command = new SqlCommand(sql, connection);
+        command.Parameters.Add("@Count", SqlDbType.Int).Value = take;
+
         await using var reader = await command.ExecuteReaderAsync();
         return await ReadManyAsync(reader);
     }

@@ -1,4 +1,4 @@
-using Azunt.BundleManagement;
+﻿using Azunt.BundleManagement;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Azunt.Web.Components.Pages.Bundles.Apis;
@@ -32,6 +32,13 @@ public class BundleApiController : ControllerBase
             Status = status,
             ActiveOnly = activeOnly
         }));
+    }
+
+    [HttpGet("recent")]
+    public async Task<ActionResult<IReadOnlyList<Bundle>>> GetRecent(
+        [FromQuery] int count = 5)
+    {
+        return Ok(await _repository.GetRecentAsync(count));
     }
 
     [HttpGet("{id:int}")]

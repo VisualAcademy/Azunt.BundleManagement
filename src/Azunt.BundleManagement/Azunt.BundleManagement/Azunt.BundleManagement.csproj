@@ -1,11 +1,11 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
 
     <PackageId>Azunt.BundleManagement</PackageId>
-    <Version>1.0.0</Version>
+    <Version>1.1.0</Version>
     <Title>Azunt.BundleManagement</Title>
     <Description>Reusable .NET 8 bundle definition CRUD module for inventory, configuration, kit, package, and catalog applications. Supports EF Core In-Memory, SQL Server, Dapper, ADO.NET, tenant-aware connection strings, schema creation/enhancement, and offset-aware audit timestamps.</Description>
     <PackageTags>Azunt;bundle;inventory;catalog;kit;package;configuration;EFCore;InMemory;Dapper;ADO.NET;Blazor;SQLServer;DateTimeOffset;multitenant;schema</PackageTags>
@@ -22,7 +22,7 @@
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <PackageReleaseNotes>Initial standalone release with Bundle CRUD, multiple repository implementations, tenant-aware connection strings, schema creation/enhancement, and DateTimeOffset audit timestamps.</PackageReleaseNotes>
+    <PackageReleaseNotes>Adds recent Bundle activity queries for dashboard summaries while preserving multi-tenant connection-string support.</PackageReleaseNotes>
 
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <NoWarn>$(NoWarn);1591</NoWarn>

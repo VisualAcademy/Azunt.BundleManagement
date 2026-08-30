@@ -1,4 +1,4 @@
-using Azunt.BundleManagement;
+﻿using Azunt.BundleManagement;
 using Xunit;
 using Microsoft.Extensions.Logging.Abstractions;
 
@@ -89,6 +89,42 @@ public class BundleRepositoryTests
         Assert.True(await repository.DeleteAsync(created.Id));
         Assert.Null(await repository.GetByIdAsync(created.Id));
         Assert.False(await repository.DeleteAsync(created.Id));
+    }
+
+
+    [Fact]
+    public async Task GetRecentAsync_OrdersByLatestActivityAndHonorsCount()
+    {
+        var repository = CreateRepository(nameof(GetRecentAsync_OrdersByLatestActivityAndHonorsCount));
+
+        await repository.AddAsync(new Bundle
+        {
+            Name = "Older Created",
+            CreatedAt = new DateTimeOffset(2026, 8, 1, 9, 0, 0, TimeSpan.Zero)
+        });
+
+        var updated = await repository.AddAsync(new Bundle
+        {
+            Name = "Recently Updated",
+            CreatedAt = new DateTimeOffset(2026, 8, 2, 9, 0, 0, TimeSpan.Zero)
+        });
+
+        await repository.AddAsync(new Bundle
+        {
+            Name = "Newest Created",
+            CreatedAt = new DateTimeOffset(2026, 8, 30, 9, 0, 0, TimeSpan.Zero)
+        });
+
+        updated.ModifiedAt =
+            new DateTimeOffset(2026, 8, 31, 9, 0, 0, TimeSpan.Zero);
+
+        Assert.True(await repository.UpdateAsync(updated));
+
+        var recent = await repository.GetRecentAsync(2);
+
+        Assert.Equal(2, recent.Count);
+        Assert.Equal("Recently Updated", recent[0].Name);
+        Assert.Equal("Newest Created", recent[1].Name);
     }
 
     [Fact]
